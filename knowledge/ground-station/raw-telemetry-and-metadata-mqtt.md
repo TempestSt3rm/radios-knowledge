@@ -8,13 +8,13 @@ GSC receives the raw bytes, decodes the ASTRA frame using generated XML definiti
 
 ## Raw ASTRA Payload
 
-When a ground station radio receives a valid LoRa packet from the rocket, it validates the byte array as ASTRA and publishes the raw frame bytes to the rocket telemetry MQTT topic.
+When a ground station radio receives a valid LoRa packet from the rocket, it validates the byte array as ASTRA and publishes the ASTRA frame bytes directly to the rocket telemetry MQTT topic.
 
 The radio does not expand the ASTRA atomics into GUI values. That decode belongs to GSC because GSC already has the XML and calibration metadata.
 
 ## Matching Radio Metadata
 
-Each time the radio receives telemetry, it also publishes a matching radio metadata payload. This lets operators debug link quality alongside the telemetry data.
+Each time the radio receives telemetry, it also publishes a matching radio metadata payload. GSC expects this radio metadata separately from the ASTRA frame. This lets operators debug link quality alongside the telemetry data.
 
 Current metadata fields:
 
@@ -42,6 +42,4 @@ The sequence number ties the link-quality metadata back to the telemetry frame i
 
 ## Open Questions
 
-- What exact MQTT payload type does GSC expect for raw ASTRA bytes: binary payload, byte array wrapper, or another container?
-- What exact schema does GSC use for radio metadata ingestion?
 - How does GSC pair late or missing metadata with telemetry frames?

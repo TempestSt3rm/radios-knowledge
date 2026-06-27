@@ -22,7 +22,7 @@ TX-from-CTS controls whether a ground station radio is allowed to transmit a que
 | Disabled | Radio receives telemetry and ignores rocket commands for RF transmission. |
 | Enabled | Radio may queue rocket commands and transmit one after CTS. |
 
-Pad and control-station radios start with TX-from-CTS disabled. GSC enables it through a radio command when that physical radio should be allowed to transmit.
+Pad and control-station radios start with TX-from-CTS disabled. GSC enables it through a convenient GUI button that sends the radio command to set enableTXfromCTS to true when that physical radio should be allowed to transmit.
 
 ## Other Radio Commands
 
@@ -56,6 +56,5 @@ These are useful for testing and operations, but TX-from-CTS is the key command 
 
 ## Open Questions
 
-- What exact GUI labels/buttons map to TX-from-CTS enable/disable?
 - Should GSC prevent enabling TX-from-CTS on more than one radio per band at once?
 - Which radio commands are considered launch-operator controls versus developer/debug controls?

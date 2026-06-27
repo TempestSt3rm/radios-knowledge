@@ -13,7 +13,7 @@ The radio hat has a band pin. On startup, the ground station radio reads this pi
 | 433 MHz band | 435.00 MHz | SX1268 | B435 / SystemA | Greater than 430 MHz and less than 440 MHz. |
 | 900 MHz band | 903.00 MHz | SX1262 | B903 / SystemB | Greater than 902 MHz and less than 928 MHz. |
 
-The exact center frequency is not fixed forever. It can be changed, as long as it stays inside the allowed band and complies with LC/radio-operator constraints.
+The exact center frequency is not fixed forever. It can be changed during operations, as long as it stays inside the selected band and complies with LC/radio-operator constraints. LC frequency approval is expected to happen ad-hoc during competition, so runtime adjustability is the main requirement.
 
 ## Default LoRa Parameters
 
@@ -50,6 +50,4 @@ Radio commands can change parameters such as frequency, bandwidth, spreading fac
 
 ## Open Questions
 
-- What final center frequencies will be used at Launch Canada 2026?
-- Who is responsible for approving frequency changes during launch operations?
 - Should any non-default LoRa settings be used for LC, or are the current defaults final?
