@@ -21,6 +21,26 @@ Commands travel from the ground station to the rocket. One example command is LA
 
 Because the radios are half-duplex, only one side should transmit on the RF link at a time. This is a major reason the project needs a telemetry protocol layer. In ASTRA, the FC is the leader: it sends telemetry and periodically opens command opportunities with CTS. Ground station radios follow by staying in receive mode unless CTS arrives and TX-from-CTS is enabled.
 
+## Launch-Day Commands
+
+Known: the FC-2026 FreeRTOS firmware accepts commands through `master_parseCommand` in the `flightComputer-2026/rtos` build. During radio operation, the FC sends a CTS opportunity, receives a command packet, parses the command, and reports the result through telemetry acknowledgement fields.
+
+The table below lists the command capabilities visible in the FC parser. This is not yet confirmed as the final operator-facing launch-day checklist.
+
+| Command area | Commands | Short description |
+| --- | --- | --- |
+| No operation | No-op | Used when no real command is queued; confirms a command window without requesting an action. |
+| Propulsion | Propulsion on/off, emergency stop/cancel, vent energize/de-energize, motor-operated valve arm/disarm, dump valve energize/de-energize, launch, reset propulsion state | Controls propulsion arming, valve states, emergency handling, and the launch action. Launch only proceeds when the firmware sees the required armed state. |
+| Recovery | Arm/disarm recovery, pad reset, fire drogue, fire main, set recovery state to landed | Controls recovery arming and parachute deployment actions. The ejection commands check recovery arming before energizing outputs. |
+| Video recorder | Power on/off, start recording, stop recording | Controls the onboard video recorder and preserves camera recording state in backup registers. |
+| Radio | Change LoRa bandwidth, spreading factor, coding rate, frequency, custom LoRa parameters, slow/normal TX mode, reset avionics | Adjusts radio link parameters and radio runtime behavior. Some radio changes are saved in backup registers and may reset the avionics afterward. |
+| Payload | Reset payload, start/stop sampling, mark landed, start/stop cooling, launch mode, pad mode, set temperature | Sends payload-control messages over CAN from the FC. |
+| HAB | Flight termination, 3-ring unlock/lock, start/stop HAB timer | Controls high-altitude balloon related release/termination behavior when that hardware path is present. |
+| SD card | Open/close file, arm/disarm deletion, delete SD card contents | Controls onboard SD logging state and protects deletion behind an explicit arm step. |
+| GPS | Factory reset, disable NMEA messages, poll location, configure GPS | Controls GPS setup and manual polling. |
+| Power | Battery-to-umbilical, umbilical-to-battery | Switches the external-power/umbilical state tracked by telemetry. |
+| Debug | Debug off, toggle GPS/radio/recovery debug, debug all on | Changes firmware debug logging masks. |
+
 ## Ownership Boundaries
 
 | Area | Notes |
@@ -61,5 +81,5 @@ Because the radios are half-duplex, only one side should transmit on the RF link
 
 ## Open Questions
 
-- What are the exact launch-day command types besides LAUNCH?
+- Which parsed FC commands should be exposed as final launch-day operator commands in GSC?
 - What are the exact operator roles that interact with the telemetry GUI and command path?
